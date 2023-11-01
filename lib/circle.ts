@@ -13,6 +13,7 @@ export function useCircle() {
     start = true
     document.addEventListener('click', onClick)
     document.addEventListener('mousemove', onMousemove)
+    document.addEventListener('contextmenu', onContextMenu)
   }
 
   function endCircle() {
@@ -58,6 +59,13 @@ export function useCircle() {
     )
     dumiCircle = drawSVGCircle(r)
     isofixCircle(dumiCircle, pointArray[0], r)
+  }
+
+  function onContextMenu(event: MouseEvent) {
+    if(!start) return
+    event.preventDefault()
+    dumiCircle && dumiCircle.remove()
+    endCircle()
   }
 
   return {
