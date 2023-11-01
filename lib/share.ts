@@ -4,6 +4,10 @@ import {
 } from './constant'
 import { Coord } from './types'
 
+/**
+ * @returns SVG 元素
+ * @description 画出一个 SVG 圆点
+ */
 export function drawSVGPoint() {
   // 创建一个 SVG 元素
   var svg = document.createElementNS(SVG_STRING, 'svg');
@@ -23,6 +27,12 @@ export function drawSVGPoint() {
   return svg
 }
 
+/**
+ * @param width 
+ * @param height 
+ * @returns SVG 元素
+ * @description 画出一个 SVG 矩形
+ */
 export function drawSVGRect(width: number, height: number) {
   var svg = document.createElementNS(SVG_STRING, 'svg');
   svg.setAttribute('width', `${width}`);
@@ -47,6 +57,11 @@ export function drawSVGRect(width: number, height: number) {
   return svg
 }
 
+/**
+ * @param r 
+ * @returns  SVG 元素
+ * @description 画出一个 SVG 圆
+ */
 export function drawSVGCircle(r: number) {
   // 画出一个svg圆
   var svg = document.createElementNS(SVG_STRING, 'svg');
@@ -74,6 +89,11 @@ export function drawSVGCircle(r: number) {
   return svg
 }
 
+/**
+ * @param points 
+ * @returns  SVG 元素
+ * @description 画出一个 SVG 多边形
+ */
 export function drawSVGPolygon(points: Coord[]) {
   // 根据点的数组，画出一个多边形
   var svg = document.createElementNS(SVG_STRING, 'svg');
@@ -101,6 +121,11 @@ export function drawSVGPolygon(points: Coord[]) {
   return svg
 }
 
+/**
+ * @param svg 
+ * @param coord
+ * @description 将 SVG 元素定位到我鼠标的位置 
+ */
 export function isofixPoint(svg: SVGSVGElement, coord: { left: number, top: number }) {
   // 将这个 SVG 元素定位到我鼠标的位置
   const left = coord.left - +SVG_POINT_CENTER
