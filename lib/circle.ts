@@ -19,6 +19,8 @@ export function useCircle() {
   function endCircle() {
     start = false
     document.removeEventListener('click', onClick)
+    document.removeEventListener('mousemove', onMousemove)
+    document.removeEventListener('contextmenu', onContextMenu)
   }
 
   function onClick(event: MouseEvent) {
@@ -28,7 +30,6 @@ export function useCircle() {
     finishCircle && finishCircle.remove()
     dumiPoints.forEach(point => point.remove())
 
-    const center = { left: event.clientX, top: event.clientY }
     if(pointArray.length === 1) {
       const r = Math.sqrt(
         Math.pow(pointArray[0].left - event.clientX, 2) +
@@ -39,6 +40,8 @@ export function useCircle() {
       pointArray = []
       return
     }
+    
+    const center = { left: event.clientX, top: event.clientY }
     const svg = drawSVGPoint()
     isofixPoint(svg, center)
     pointArray.push(center)

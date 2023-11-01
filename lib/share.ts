@@ -74,6 +74,33 @@ export function drawSVGCircle(r: number) {
   return svg
 }
 
+export function drawSVGPolygon(points: Coord[]) {
+  // 根据点的数组，画出一个多边形
+  var svg = document.createElementNS(SVG_STRING, 'svg');
+  svg.setAttribute('width', `100%`);
+  svg.setAttribute('height', `100%`);
+  svg.setAttribute('style', `position: absolute; top: 0; left: 0; z-index: 9999;`);
+  // 创建一个多边形元素
+  var polygon = document.createElementNS(SVG_STRING, 'polygon');
+  const pointsString = points.map(point => `${point.left},${point.top}`).join(' ')
+  polygon.setAttribute('points', pointsString);
+  polygon.setAttribute('fill', SVG_COLOR);
+  polygon.setAttribute('stroke', SVG_STROKE);
+  // 透明
+  polygon.setAttribute('fill-opacity', '0.1');
+  // 虚线 透明
+  polygon.setAttribute('stroke-dasharray', '5,5');
+  polygon.setAttribute('stroke-width', SVG_STROKE_WIDTH);
+  polygon.setAttribute('stroke-opacity', '0.2');
+
+  // 将多边形添加到 SVG 元素中
+  svg.appendChild(polygon);
+  // 将 SVG 元素添加到 body 中
+  document.body.appendChild(svg);
+
+  return svg
+}
+
 export function isofixPoint(svg: SVGSVGElement, coord: { left: number, top: number }) {
   // 将这个 SVG 元素定位到我鼠标的位置
   const left = coord.left - +SVG_POINT_CENTER
@@ -101,7 +128,7 @@ export function isofixCircle(svg: SVGSVGElement, center: Coord, r: number) {
   svg.setAttribute(
     'style',
     ` position: fixed; 
-      left: ${left - r}px; 
-      top: ${top - r}px;`
+      left: ${left - r - +SVG_STROKE_WIDTH}px; 
+      top: ${top - r - +SVG_STROKE_WIDTH}px;`
   )
 }
