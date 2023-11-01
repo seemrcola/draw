@@ -50,8 +50,8 @@ export function drawSVGRect(width: number, height: number) {
 export function drawSVGCircle(r: number) {
   // 画出一个svg圆
   var svg = document.createElementNS(SVG_STRING, 'svg');
-  const side = r * 2 + +SVG_STROKE_WIDTH * 2
-  const c = r + +SVG_STROKE_WIDTH
+  const side = r * 2 + +SVG_STROKE_WIDTH * 2  // 边长
+  const c = side / 2                          // 圆心位置
   svg.setAttribute('width', `${side}`);
   svg.setAttribute('height', `${side}`);
   // 创建一个圆元素
