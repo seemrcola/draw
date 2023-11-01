@@ -39,7 +39,7 @@ export function useRect() {
 
     // 画出矩形只需要两个点
     if(pointArray.length === 2) {
-      finishRect = drawRect(pointArray, true)
+      finishRect = drawRect(pointArray, false)
       pointArray = []
     }
   }
@@ -59,7 +59,7 @@ export function useRect() {
     endRect()
   }
   
-  function drawRect(pointArray: Array<Coord>, isofixPoints = false) {
+  function drawRect(pointArray: Array<Coord>, isofixPoints = true) {
     // 根据两个点算出矩形的左上角和右下角的坐标
     const [point1, point2] = pointArray
     const width = Math.abs(point2.left - point1.left)
@@ -71,20 +71,9 @@ export function useRect() {
     const svg = drawSVGRect(width, height)
     isofixRect(svg, {left: startX, top: startY})
 
-    // 画出四个角的点
-    if(isofixPoints) {
-      const leftTop = drawSVGPoint()
-      const rightTop = drawSVGPoint()
-      const leftBottom = drawSVGPoint()
-      const rightBottom = drawSVGPoint()
-      isofixPoint(rightTop, {left: startX + width, top: startY})
-      isofixPoint(leftBottom, {left: startX, top: startY + height})
-      isofixPoint(leftTop, {left: startX, top: startY})
-      isofixPoint(rightBottom, {left: startX + width, top: startY + height})
-
-      // 将 SVG 元素添加到数组中
-      dumiPoints.push(rightTop, leftBottom, leftTop, rightBottom)
-    }
+    // 清空点（当绘制结束的时候）
+    if(!isofixPoints) 
+      dumiPoints.forEach(point => point.remove())
 
     return svg
   }
