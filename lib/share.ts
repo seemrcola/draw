@@ -99,7 +99,7 @@ export function drawSVGPolygon(points: Coord[]) {
   var svg = document.createElementNS(SVG_STRING, 'svg');
   svg.setAttribute('width', `100%`);
   svg.setAttribute('height', `100%`);
-  svg.setAttribute('style', `position: absolute; top: 0; left: 0; z-index: 9999;`);
+  svg.setAttribute('style', `position: absolute; top: 0; left: 0;`);
   // 创建一个多边形元素
   var polygon = document.createElementNS(SVG_STRING, 'polygon');
   const pointsString = points.map(point => `${point.left},${point.top}`).join(' ')
@@ -134,7 +134,8 @@ export function isofixPoint(svg: SVGSVGElement, coord: { left: number, top: numb
     'style',
     ` position: fixed; 
       left: ${left}px; 
-      top: ${top}px;`
+      top: ${top}px;
+      z-index: 2147483647`
   )
 }
 
@@ -156,4 +157,21 @@ export function isofixCircle(svg: SVGSVGElement, center: Coord, r: number) {
       left: ${left - r - +SVG_STROKE_WIDTH}px; 
       top: ${top - r - +SVG_STROKE_WIDTH}px;`
   )
+}
+
+/**
+ * @param cb 
+ * @param queue 
+ * @description
+ * 优化性能，防止频繁触发
+ */
+export function rafDebounce(cb: () => void, queue: any[]) {
+  queue.push(cb)
+  requestAnimationFrame(() => {
+    if(queue.length !== 0) {
+      const lastCallback = queue.pop()
+      lastCallback && lastCallback()
+      queue.length = 0
+    }
+  })
 }

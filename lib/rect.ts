@@ -1,4 +1,7 @@
-import { drawSVGPoint, drawSVGRect, isofixPoint, isofixRect } from './share'
+import { 
+  drawSVGPoint, drawSVGRect, 
+  isofixPoint, isofixRect, rafDebounce 
+} from './share'
 import { Coord } from './types'
 
 export function useRect() {
@@ -47,15 +50,26 @@ export function useRect() {
   function onMouseMove(event: MouseEvent) {
     if(!start) return 
     if(pointArray.length === 0) return
-    dumiRect && dumiRect.remove()
-    const coord = {left: event.clientX, top: event.clientY}
-    dumiRect = drawRect([pointArray[0], coord])
+    const taskQueue:any[] = []
+    const task = () => {
+      dumiRect && dumiRect.remove()
+      const coord = {left: event.clientX, top: event.clientY}
+      dumiRect = drawRect([pointArray[0], coord])
+    }
+    rafDebounce(task, taskQueue)
   }
 
   function onContextMenu(event: MouseEvent) {
     if(!start) return
     event.preventDefault()
+
+    /* 右键表示绘制结束，全部变量清零处理 */
     dumiRect && dumiRect.remove()
+    dumiRect = null
+    pointArray = []
+    dumiPoints.forEach(point => point.remove())
+    dumiPoints = []
+
     endRect()
   }
   
